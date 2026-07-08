@@ -1,0 +1,27 @@
+# .NET build output
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# Rider / VS / VS Code
+.idea/
+.vs/
+*.user
+*.suo
+
+# NuGet
+*.nupkg
+packages/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# pac working artifacts (exported solutions, etc.)
+out/
+*.zip
+*.log
+
+# Claude Code local settings (per-user)
+.claude/settings.local.json

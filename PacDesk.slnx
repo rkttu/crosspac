@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PacDesk.App/PacDesk.App.csproj" />
+    <Project Path="src/PacDesk.Core/PacDesk.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PacDesk.Core.Tests/PacDesk.Core.Tests.csproj" />
+  </Folder>
+</Solution>
