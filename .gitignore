@@ -25,3 +25,7 @@ out/
 
 # Claude Code local settings (per-user)
 .claude/settings.local.json
+
+# Rendered slide output (source .md is tracked; regenerate with marp)
+docs/slides/*.html
+docs/slides/*.pdf
