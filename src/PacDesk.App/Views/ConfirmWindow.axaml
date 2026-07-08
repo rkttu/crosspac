@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="PacDesk.App.Views.ConfirmWindow"
+        Width="440" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Title="Confirm">
+
+    <StackPanel Margin="20" Spacing="18">
+        <TextBlock x:Name="MessageText" TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Content="Cancel" Click="OnCancel" MinWidth="80" />
+            <Button Content="OK" Click="OnConfirm" IsDefault="True" MinWidth="80"
+                    Classes="accent" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>
