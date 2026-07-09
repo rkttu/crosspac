@@ -1,25 +1,25 @@
-# PacDesk — Architecture
+# Crosspac — Architecture
 
 ## Overview
 
 Two projects, strict one-way dependency:
 
 ```
-PacDesk.App (Avalonia UI, MVVM)  ─────►  PacDesk.Core (no UI dependencies)
+Crosspac.App (Avalonia UI, MVVM)  ─────►  Crosspac.Core (no UI dependencies)
                                               │
                                               ▼
                                          `pac` process (external)
 ```
 
-- **`PacDesk.Core`** knows nothing about Avalonia. It's pure C#: it launches `pac`,
+- **`Crosspac.Core`** knows nothing about Avalonia. It's pure C#: it launches `pac`,
   captures output, and exposes typed services. Unit-testable in isolation.
-- **`PacDesk.App`** is the Avalonia presentation layer (Views + ViewModels). It never
-  starts a process directly — it only talks to `PacDesk.Core` services.
+- **`Crosspac.App`** is the Avalonia presentation layer (Views + ViewModels). It never
+  starts a process directly — it only talks to `Crosspac.Core` services.
 
 This split means the wrapper logic could later be reused by a different front-end
 (CLI, web, tests) without change.
 
-## PacDesk.Core
+## Crosspac.Core
 
 ### Execution layer (`Execution/`)
 
@@ -65,7 +65,7 @@ breaks because pac pads columns to fixed widths, leaving as little as **one** sp
 between a full-width value and the next column — which merged the Environment ID, URL,
 and Unique Name into one field. (A real-`pac` integration test caught exactly this.)
 
-Current strategy, isolated in `PacDesk.Core.Services`:
+Current strategy, isolated in `Crosspac.Core.Services`:
 
 - **`env list`** → **content-aware** parsing: extract the Environment ID by GUID shape
   and the URL by `https?://` shape (`TableParser.Guid()` / `Url()`), independent of
@@ -106,7 +106,7 @@ the status line.
 
 - **`ISettingsStore` / `JsonSettingsStore`** (Core) persist `AppSettings` (window size,
   pac path override) as JSON under the OS per-user config dir
-  (`%APPDATA%` / `~/.config`) — `~/.config/PacDesk/settings.json` on this machine. Load is
+  (`%APPDATA%` / `~/.config`) — `~/.config/Crosspac/settings.json` on this machine. Load is
   tolerant (missing/corrupt → defaults); save is best-effort and never throws. The store
   takes an explicit path in tests.
 - **pac path** is read at startup to construct `PacRunner`; the Settings tab edits it and
@@ -120,7 +120,7 @@ the status line.
 command log always shows the true output, so the user can fall back to reading it
 directly even if a parser misses a column.
 
-## PacDesk.App (Avalonia + MVVM)
+## Crosspac.App (Avalonia + MVVM)
 
 ### Pattern
 
@@ -158,7 +158,7 @@ buttons during a command.
   suppresses a console window on Windows; it's inert elsewhere.
 - Fonts: bundled Inter (`Avalonia.Fonts.Inter`) so text renders identically everywhere.
 
-## Testing (`tests/PacDesk.Core.Tests`, xUnit)
+## Testing (`tests/Crosspac.Core.Tests`, xUnit)
 
 - **Unit tests** run services against a **`FakePacRunner`** returning canned CLI output —
   verifies argument construction + parsing without a real Dataverse tenant.

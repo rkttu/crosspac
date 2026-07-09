@@ -1,4 +1,4 @@
-# PacDesk — Implementation Plan (pac command coverage)
+# Crosspac — Implementation Plan (pac command coverage)
 
 This document prioritizes **which `pac` verbs to wrap next**, and in what order.
 

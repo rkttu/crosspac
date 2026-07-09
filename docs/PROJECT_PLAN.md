@@ -1,4 +1,4 @@
-# PacDesk — Project Plan
+# Crosspac — Project Plan
 
 ## 1. Vision
 
@@ -8,7 +8,7 @@ users: Power Platform developers and ALM engineers who live in `pac` but want a
 faster, less error-prone surface for repetitive tasks (switching environments,
 exporting/importing solutions, inspecting auth state).
 
-PacDesk is a **wrapper**, not a reimplementation. It shells out to the user's
+Crosspac is a **wrapper**, not a reimplementation. It shells out to the user's
 installed `pac` binary. This keeps it always-compatible with new `pac` versions and
 avoids duplicating Dataverse API logic.
 
@@ -55,7 +55,7 @@ Derived from [SKILL.md](../.claude/skills/pac-power-platform-cli/SKILL.md):
 
 | Risk | Mitigation |
 |---|---|
-| `pac` text output is tabular, not JSON — fragile to parse | Prefer `--json` where a verb supports it; isolate parsing in `PacDesk.Core` behind services so it's swappable. Keep raw output on every model. |
+| `pac` text output is tabular, not JSON — fragile to parse | Prefer `--json` where a verb supports it; isolate parsing in `Crosspac.Core` behind services so it's swappable. Keep raw output on every model. |
 | `pac` not installed / wrong version | Startup availability check + clear guidance banner; never assume success. |
 | Long-running commands (import/export) block UI | All calls are async; runner streams output; UI shows busy state and stays responsive. |
 | Interactive commands (`auth create` opening a browser) | MVP only *reads* auth; creation wizard is a later, carefully-designed feature. |

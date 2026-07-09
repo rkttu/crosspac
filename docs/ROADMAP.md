@@ -1,4 +1,4 @@
-# PacDesk — Roadmap
+# Crosspac — Roadmap
 
 Incremental milestones. Each builds on the previous; the wrapper/runner core stays stable.
 
@@ -7,7 +7,7 @@ Incremental milestones. Each builds on the previous; the wrapper/runner core sta
 
 ## v0.1 — MVP scaffold  ✅ (this scaffold)
 
-- [x] Solution structure: `PacDesk.Core` + `PacDesk.App`, buildable with `dotnet build`.
+- [x] Solution structure: `Crosspac.Core` + `Crosspac.App`, buildable with `dotnet build`.
 - [x] `PacRunner` — async process wrapper with streamed output + exit code + duration.
 - [x] Services + models for auth / env / solution.
 - [x] Avalonia shell: Auth, Environments, Solutions tabs + live Command Log.
@@ -19,7 +19,7 @@ Incremental milestones. Each builds on the previous; the wrapper/runner core sta
 - [x] Always-visible status bar: active auth profile + active environment.
 - [x] Content-aware `env list` parsing (GUID/URL extraction) — robust to pac's
       single-space column alignment. Verified by real-`pac` integration tests.
-- [x] Unit + integration test project (`PacDesk.Core.Tests`) with a fake `IPacRunner`.
+- [x] Unit + integration test project (`Crosspac.Core.Tests`) with a fake `IPacRunner`.
 - [x] Capability probe (`IPacCapabilityProbe`) — mechanically detects `--json` support
       per verb via `pac <verb> help`; services take the JSON path when available and fall
       back to text otherwise. (No installed verb advertises `--json` yet, so the path is

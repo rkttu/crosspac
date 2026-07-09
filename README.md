@@ -1,9 +1,9 @@
-# PacDesk
+# Crosspac
 
 A cross-platform desktop GUI client that wraps the **Microsoft Power Platform CLI (`pac`)**.
 Built with [Avalonia UI](https://avaloniaui.net/) so a single codebase runs on **Windows, Linux, and macOS**.
 
-PacDesk is a *thin, honest* front-end over `pac`: every action it performs is a real
+Crosspac is a *thin, honest* front-end over `pac`: every action it performs is a real
 `pac` command, shown live in a command log. It doesn't reimplement Dataverse APIs — it
 drives the CLI you already trust, with a friendlier surface for the most common tasks
 (auth profiles, environments, and solution ALM).
@@ -41,20 +41,20 @@ dotnet test           # unit + (real pac) integration tests
 - [.NET SDK 10.0+](https://dotnet.microsoft.com/download)
 - [Power Platform CLI (`pac`)](https://learn.microsoft.com/power-platform/developer/cli/introduction)
   installed and on `PATH` (`dotnet tool install --global Microsoft.PowerApps.CLI.Tool`)
-- An existing `pac auth` profile (PacDesk reads, but does not replace, your CLI login)
+- An existing `pac auth` profile (Crosspac reads, but does not replace, your CLI login)
 
 ## Build & run
 
 ```bash
 dotnet build
-dotnet run --project src/PacDesk.App
+dotnet run --project src/Crosspac.App
 ```
 
 ## Layout
 
 ```
-PacDesk/
-├── PacDesk.slnx                  # .NET 10 XML solution format
+Crosspac/
+├── Crosspac.slnx                  # .NET 10 XML solution format
 ├── README.md
 ├── docs/                          # Planning & design
 │   ├── PROJECT_PLAN.md            # Vision, scope, risks
@@ -63,10 +63,10 @@ PacDesk/
 │   ├── IMPLEMENTATION_PLAN.md     # Prioritized plan for the remaining pac verbs
 │   └── slides/                    # Marp deck (Azure Presales intro)
 ├── src/
-│   ├── PacDesk.Core/              # UI-agnostic: pac runner, services, models, settings
-│   └── PacDesk.App/               # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
+│   ├── Crosspac.Core/              # UI-agnostic: pac runner, services, models, settings
+│   └── Crosspac.App/               # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
 └── tests/
-    └── PacDesk.Core.Tests/        # Unit (fake runner) + real-pac integration tests
+    └── Crosspac.Core.Tests/        # Unit (fake runner) + real-pac integration tests
 ```
 
 ## Documentation
@@ -74,7 +74,7 @@ PacDesk/
 - [Project plan](docs/PROJECT_PLAN.md) · [Architecture](docs/ARCHITECTURE.md)
 - [Version roadmap](docs/ROADMAP.md) · [Implementation plan](docs/IMPLEMENTATION_PLAN.md) (what to build next)
 - [`pac` skill reference](.claude/skills/pac-power-platform-cli/SKILL.md)
-- Presentation: `docs/slides/pacdesk-azure-presales.md` (render with the [Marp](https://marp.app/) CLI or VS Code extension)
+- Presentation: `docs/slides/crosspac-azure-presales.md` (render with the [Marp](https://marp.app/) CLI or VS Code extension)
 
 ## Design principles
 

@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Crosspac.App.Views.SolutionsView">
+
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top" Spacing="8" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="Refresh" Command="{Binding RefreshCommand}" />
+                <TextBlock Text="Export to:" VerticalAlignment="Center" />
+                <TextBox Text="{Binding ExportPath}" Width="160" VerticalAlignment="Center" />
+                <Button Content="Browse…" Command="{Binding BrowseExportCommand}" />
+                <CheckBox Content="Managed" IsChecked="{Binding ExportManaged}" VerticalAlignment="Center" />
+                <Button Content="Export selected" Command="{Binding ExportCommand}" />
+                <Button Content="Publish…" Command="{Binding PublishCommand}" />
+                <Button Content="Delete…" Command="{Binding DeleteCommand}" />
+                <Button Content="Cancel" Command="{Binding CancelCommand}" IsEnabled="{Binding IsBusy}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Import .zip:" VerticalAlignment="Center" />
+                <TextBox Text="{Binding ImportPath}" Width="260" VerticalAlignment="Center"
+                         Watermark="path to solution .zip" />
+                <Button Content="Browse…" Command="{Binding BrowseImportCommand}" />
+                <Button Content="Import…" Command="{Binding ImportCommand}"
+                        Classes="accent" />
+                <TextBlock Text="{Binding Status}" VerticalAlignment="Center" Foreground="#52606D" />
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Solutions}"
+                  SelectedItem="{Binding SelectedSolution, Mode=TwoWay}"
+                  IsReadOnly="True" AutoGenerateColumns="False"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Unique Name" Binding="{Binding UniqueName}" Width="240" />
+                <DataGridTextColumn Header="Friendly Name" Binding="{Binding FriendlyName}" Width="*" />
+                <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="120" />
+                <DataGridCheckBoxColumn Header="Managed" Binding="{Binding IsManaged}" Width="90" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+
+</UserControl>
