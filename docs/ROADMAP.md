@@ -2,6 +2,9 @@
 
 Incremental milestones. Each builds on the previous; the wrapper/runner core stays stable.
 
+> For the prioritized, command-by-command plan of *which pac verbs to wrap next*, see
+> [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
+
 ## v0.1 — MVP scaffold  ✅ (this scaffold)
 
 - [x] Solution structure: `PacDesk.Core` + `PacDesk.App`, buildable with `dotnet build`.

@@ -13,16 +13,28 @@ drives the CLI you already trust, with a friendlier surface for the most common 
 
 ## Status
 
-🚧 **MVP + early v0.2.** Buildable, tested skeleton: `pac` process runner, service
-layer (auth / env / solution / context), MVVM view models, three functional tabs, a
-live command log, an active-context status bar, and a confirmation dialog for
-destructive `solution import`. Covered by unit tests (fake runner) and real-`pac`
-integration tests. See [docs/ROADMAP.md](docs/ROADMAP.md).
+✅ **v0.2 complete.** A buildable, tested cross-platform client (0 warnings / 0 errors,
+**22 tests** incl. real-`pac` integration). Next work is prioritized in
+[docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md); version milestones in
+[docs/ROADMAP.md](docs/ROADMAP.md).
 
 ```bash
 dotnet build          # 0 warnings, 0 errors
 dotnet test           # unit + (real pac) integration tests
 ```
+
+### Features today
+
+- **Auth** — list / switch authentication profiles.
+- **Environments** — list / select the active Dataverse environment.
+- **Solutions** — list · export · import · publish · delete.
+- **Live command log** — the exact `pac` command line + stdout/stderr, always visible.
+- **Active-context status bar** — the active profile + environment, at all times.
+- **Safe by default** — confirmation dialogs before destructive ops (import/publish/delete).
+- **Cancellable** — any running command; cancel kills the pac process tree.
+- **Native file/folder pickers** and persisted **settings** (window size, pac path).
+- **`--json` capability probe** — detects `--json` support per verb via `pac <verb> help`
+  and prefers structured output when available, falling back to resilient text parsing.
 
 ## Prerequisites
 
@@ -42,16 +54,27 @@ dotnet run --project src/PacDesk.App
 
 ```
 PacDesk/
-├── PacDesk.slnx              # .NET 10 XML solution format
+├── PacDesk.slnx                  # .NET 10 XML solution format
 ├── README.md
-├── docs/                      # Planning & design
-│   ├── PROJECT_PLAN.md
-│   ├── ARCHITECTURE.md
-│   └── ROADMAP.md
-└── src/
-    ├── PacDesk.Core/          # UI-agnostic: pac runner, services, models
-    └── PacDesk.App/           # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
+├── docs/                          # Planning & design
+│   ├── PROJECT_PLAN.md            # Vision, scope, risks
+│   ├── ARCHITECTURE.md            # Layering, runner, parsing, capability probe
+│   ├── ROADMAP.md                 # Version milestones (v0.1 → v0.6)
+│   ├── IMPLEMENTATION_PLAN.md     # Prioritized plan for the remaining pac verbs
+│   └── slides/                    # Marp deck (Azure Presales intro)
+├── src/
+│   ├── PacDesk.Core/              # UI-agnostic: pac runner, services, models, settings
+│   └── PacDesk.App/               # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
+└── tests/
+    └── PacDesk.Core.Tests/        # Unit (fake runner) + real-pac integration tests
 ```
+
+## Documentation
+
+- [Project plan](docs/PROJECT_PLAN.md) · [Architecture](docs/ARCHITECTURE.md)
+- [Version roadmap](docs/ROADMAP.md) · [Implementation plan](docs/IMPLEMENTATION_PLAN.md) (what to build next)
+- [`pac` skill reference](.claude/skills/pac-power-platform-cli/SKILL.md)
+- Presentation: `docs/slides/pacdesk-azure-presales.md` (render with the [Marp](https://marp.app/) CLI or VS Code extension)
 
 ## Design principles
 
