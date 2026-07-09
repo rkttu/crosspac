@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Crosspac.Core\Crosspac.Core.csproj" />
+    <ProjectReference Include="..\Crosspac.Core\Crosspac.Core.csproj" />
   </ItemGroup>
 
 </Project>

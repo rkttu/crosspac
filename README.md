@@ -19,8 +19,8 @@ drives the CLI you already trust, with a friendlier surface for the most common 
 [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ```bash
-dotnet build          # 0 warnings, 0 errors
-dotnet test           # unit + (real pac) integration tests
+dotnet build src/Crosspac.slnx    # 0 warnings, 0 errors
+dotnet test  src/Crosspac.slnx    # unit + (real pac) integration tests
 ```
 
 ### Features today
@@ -46,7 +46,7 @@ dotnet test           # unit + (real pac) integration tests
 ## Build & run
 
 ```bash
-dotnet build
+dotnet build src/Crosspac.slnx
 dotnet run --project src/Crosspac.App
 ```
 
@@ -54,7 +54,6 @@ dotnet run --project src/Crosspac.App
 
 ```
 Crosspac/
-├── Crosspac.slnx                  # .NET 10 XML solution format
 ├── README.md
 ├── docs/                          # Planning & design
 │   ├── PROJECT_PLAN.md            # Vision, scope, risks
@@ -62,11 +61,11 @@ Crosspac/
 │   ├── ROADMAP.md                 # Version milestones (v0.1 → v0.6)
 │   ├── IMPLEMENTATION_PLAN.md     # Prioritized plan for the remaining pac verbs
 │   └── slides/                    # Marp deck (Azure Presales intro)
-├── src/
-│   ├── Crosspac.Core/              # UI-agnostic: pac runner, services, models, settings
-│   └── Crosspac.App/               # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
-└── tests/
-    └── Crosspac.Core.Tests/        # Unit (fake runner) + real-pac integration tests
+└── src/
+    ├── Crosspac.slnx              # .NET 10 XML solution format
+    ├── Crosspac.Core/             # UI-agnostic: pac runner, services, models, settings
+    ├── Crosspac.App/              # Avalonia UI (MVVM, CommunityToolkit.Mvvm)
+    └── Crosspac.Core.Tests/       # Unit (fake runner) + real-pac integration tests
 ```
 
 ## Documentation

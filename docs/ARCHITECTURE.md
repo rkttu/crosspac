@@ -158,7 +158,7 @@ buttons during a command.
   suppresses a console window on Windows; it's inert elsewhere.
 - Fonts: bundled Inter (`Avalonia.Fonts.Inter`) so text renders identically everywhere.
 
-## Testing (`tests/Crosspac.Core.Tests`, xUnit)
+## Testing (`src/Crosspac.Core.Tests`, xUnit)
 
 - **Unit tests** run services against a **`FakePacRunner`** returning canned CLI output —
   verifies argument construction + parsing without a real Dataverse tenant.

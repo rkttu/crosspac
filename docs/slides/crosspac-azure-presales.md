@@ -358,7 +358,7 @@ Feedback on presales scenarios · pilot with a customer onboarding · roadmap pr
 ### Repo layout
 - `src/Crosspac.Core` — wrapper, services
 - `src/Crosspac.App` — Avalonia UI
-- `tests/…` — 22 tests
+- `src/Crosspac.Core.Tests` — 22 tests
 - `docs/` — plan · architecture · roadmap
 
 </div>
