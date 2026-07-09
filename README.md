@@ -83,3 +83,9 @@ Crosspac/
 3. **Cross-platform first.** No Windows-only APIs; `pac tool` GUIs are intentionally out of scope.
 4. **Safe by default.** Destructive commands (import/publish/delete) require explicit confirmation
    and always show the active auth profile + target environment first.
+
+## License
+
+Licensed under the **Apache License, Version 2.0**. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+Copyright 2026 Jung Hyun, Nam
