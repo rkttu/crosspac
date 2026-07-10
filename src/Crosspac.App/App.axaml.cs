@@ -30,10 +30,12 @@ public partial class App : Application
             var contextService = new ContextService(authService, environmentService);
             var dialogService = new DialogService();
             var pickerService = new StoragePickerService();
+            var clipboardService = new ClipboardService();
 
             var mainViewModel = new MainWindowViewModel(
                 runner, authService, environmentService, solutionService,
-                contextService, dialogService, pickerService, settingsStore, settings);
+                contextService, dialogService, pickerService, clipboardService,
+                settingsStore, settings);
 
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
         }

@@ -29,20 +29,6 @@ public sealed class StoragePickerService : IStoragePickerService
         return files.Count > 0 ? files[0].TryGetLocalPath() : null;
     }
 
-    public async Task<string?> PickFolderAsync()
-    {
-        var provider = MainWindow?.StorageProvider;
-        if (provider is null) return null;
-
-        var folders = await provider.OpenFolderPickerAsync(new FolderPickerOpenOptions
-        {
-            Title = "Select export folder",
-            AllowMultiple = false,
-        });
-
-        return folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
-    }
-
     public async Task<string?> PickFileAsync(string title)
     {
         var provider = MainWindow?.StorageProvider;
@@ -55,5 +41,26 @@ public sealed class StoragePickerService : IStoragePickerService
         });
 
         return files.Count > 0 ? files[0].TryGetLocalPath() : null;
+    }
+
+    public async Task<string?> PickSaveFilePathAsync(string title, string suggestedFileName, string defaultExtension)
+    {
+        var provider = MainWindow?.StorageProvider;
+        if (provider is null) return null;
+
+        var ext = defaultExtension.TrimStart('.').ToLowerInvariant();
+        var file = await provider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = title,
+            SuggestedFileName = suggestedFileName,
+            DefaultExtension = ext,
+            FileTypeChoices = new[]
+            {
+                new FilePickerFileType($"{ext.ToUpperInvariant()} file") { Patterns = new[] { $"*.{ext}" } },
+                new FilePickerFileType("All files") { Patterns = new[] { "*" } },
+            },
+        });
+
+        return file?.TryGetLocalPath();
     }
 }
