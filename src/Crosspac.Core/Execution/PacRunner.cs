@@ -34,6 +34,10 @@ public sealed class PacRunner : IPacRunner, IPacExecutable
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
+            // pac emits UTF-8; without this the child's bytes are decoded with the OS
+            // OEM code page (e.g. CP949 on Korean Windows), mojibaking CJK output.
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8,
         };
         foreach (var arg in args)
             startInfo.ArgumentList.Add(arg);

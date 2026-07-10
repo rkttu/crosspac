@@ -62,17 +62,24 @@ public sealed class SolutionService : ISolutionService
             }
             if (!pastHeader) continue;
 
-            var columns = TableParser.SplitColumns(line);
+            // Columns are Unique Name | Friendly Name | Version | Managed. A friendly name
+            // can contain spaces (incl. CJK) and pac separates columns with a single space,
+            // so a whitespace split can't be mapped positionally in the middle. Instead we
+            // anchor on the outer tokens — unique name first, managed last, version next —
+            // and treat everything between as the (possibly multi-word) friendly name.
+            var tokens = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+            if (tokens.Length < 3) continue;
+
+            var managed = tokens[^1];
             solutions.Add(new Solution
             {
-                UniqueName = columns.ElementAtOrDefault(0) ?? "",
-                FriendlyName = columns.ElementAtOrDefault(1) ?? "",
-                Version = columns.ElementAtOrDefault(2) ?? "",
+                UniqueName = tokens[0],
+                FriendlyName = string.Join(' ', tokens[1..^2]),
+                Version = tokens[^2],
                 // The managed column renders as a boolean-ish token (Yes/True/Managed).
-                IsManaged = columns.Any(c =>
-                    c.Equals("Managed", StringComparison.OrdinalIgnoreCase) ||
-                    c.Equals("True", StringComparison.OrdinalIgnoreCase) ||
-                    c.Equals("Yes", StringComparison.OrdinalIgnoreCase)),
+                IsManaged = managed.Equals("Managed", StringComparison.OrdinalIgnoreCase) ||
+                            managed.Equals("True", StringComparison.OrdinalIgnoreCase) ||
+                            managed.Equals("Yes", StringComparison.OrdinalIgnoreCase),
                 Raw = line,
             });
         }

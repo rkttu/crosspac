@@ -52,17 +52,20 @@ public sealed class AuthService : IAuthService
             // Data rows begin with a bracketed index, e.g. "[1] * UNIVERSAL ...".
             if (!line.TrimStart().StartsWith('[')) continue;
 
-            var columns = TableParser.SplitColumns(line);
-            var index = columns.ElementAtOrDefault(0)?.Trim('[', ']', '*', ' ') ?? "";
+            // Split on any run of whitespace (not just column padding): pac packs the
+            // User column against the next one with a single space, so a 2+-space split
+            // would glue "user@x Public OperatingSystem env url" into the User field.
+            // Each field we need (index, kind, email) is a single space-free token.
+            var tokens = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
 
             profiles.Add(new AuthProfile
             {
-                Index = index,
-                IsActive = line.Contains('*'),
-                Kind = columns.FirstOrDefault(c =>
-                    c.Equals("UNIVERSAL", StringComparison.OrdinalIgnoreCase) ||
-                    c.Equals("DATAVERSE", StringComparison.OrdinalIgnoreCase)) ?? "",
-                User = columns.FirstOrDefault(c => c.Contains('@')) ?? "",
+                Index = tokens.ElementAtOrDefault(0)?.Trim('[', ']', '*', ' ') ?? "",
+                IsActive = tokens.Contains("*"),
+                Kind = tokens.FirstOrDefault(t =>
+                    t.Equals("UNIVERSAL", StringComparison.OrdinalIgnoreCase) ||
+                    t.Equals("DATAVERSE", StringComparison.OrdinalIgnoreCase)) ?? "",
+                User = tokens.FirstOrDefault(t => t.Contains('@')) ?? "",
                 Raw = line,
             });
         }
