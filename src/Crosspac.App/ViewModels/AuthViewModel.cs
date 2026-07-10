@@ -11,7 +11,7 @@ using Crosspac.Core.Services;
 
 namespace Crosspac.App.ViewModels;
 
-public sealed partial class AuthViewModel : ViewModelBase
+public sealed partial class AuthViewModel : ViewModelBase, IRefreshableTab
 {
     private readonly IAuthService _auth;
     private CancellationTokenSource? _cts;
@@ -22,12 +22,14 @@ public sealed partial class AuthViewModel : ViewModelBase
 
     [ObservableProperty] private AuthProfile? _selectedProfile;
     [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private bool _hasLoaded;
     [ObservableProperty] private string? _status;
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
         _cts = new CancellationTokenSource();
+        HasLoaded = true;
         IsBusy = true;
         Status = "Loading auth profiles…";
         try

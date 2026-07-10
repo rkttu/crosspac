@@ -11,7 +11,7 @@ using Crosspac.Core.Services;
 
 namespace Crosspac.App.ViewModels;
 
-public sealed partial class EnvironmentsViewModel : ViewModelBase
+public sealed partial class EnvironmentsViewModel : ViewModelBase, IRefreshableTab
 {
     private readonly IEnvironmentService _environments;
     private CancellationTokenSource? _cts;
@@ -22,12 +22,14 @@ public sealed partial class EnvironmentsViewModel : ViewModelBase
 
     [ObservableProperty] private DataverseEnvironment? _selectedEnvironment;
     [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private bool _hasLoaded;
     [ObservableProperty] private string? _status;
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
         _cts = new CancellationTokenSource();
+        HasLoaded = true;
         IsBusy = true;
         Status = "Loading environments…";
         try

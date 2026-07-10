@@ -27,9 +27,15 @@
             </StackPanel>
         </Border>
 
-        <!-- Body: tabs on top, shared command log on the bottom -->
-        <Grid RowDefinitions="*,200">
-            <TabControl Grid.Row="0" Margin="4">
+        <!-- Body: tabs on top, resizable shared command log on the bottom -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="120" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{Binding LogPanelHeight, Mode=TwoWay}" MinHeight="80" />
+            </Grid.RowDefinitions>
+
+            <TabControl Grid.Row="0" Margin="4" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
                 <TabItem Header="Auth">
                     <ContentControl Content="{Binding Auth}" />
                 </TabItem>
@@ -44,7 +50,27 @@
                 </TabItem>
             </TabControl>
 
-            <Border Grid.Row="1" BorderBrush="#334E68" BorderThickness="0,1,0,0">
+            <!-- Modal busy overlay: blocks tab input while a query runs so a second one
+                 can't be started, and hosts the cancel action for the running query. -->
+            <Border Grid.Row="0" IsVisible="{Binding IsBusy}" Background="#99202A33">
+                <Border Background="#1F2933" CornerRadius="10" Padding="28,22"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="240">
+                    <StackPanel Spacing="16">
+                        <TextBlock Text="{Binding BusyMessage}" Foreground="#E4E7EB"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" />
+                        <ProgressBar IsIndeterminate="True" Width="200" />
+                        <Button Content="Cancel" Command="{Binding CancelActiveCommand}"
+                                HorizontalAlignment="Center" MinWidth="90" />
+                    </StackPanel>
+                </Border>
+            </Border>
+
+            <!-- Drag to resize the command log panel up/down -->
+            <GridSplitter Grid.Row="1" Height="6" HorizontalAlignment="Stretch"
+                          ResizeDirection="Rows" Background="#334E68"
+                          Cursor="SizeNorthSouth" />
+
+            <Border Grid.Row="2" BorderBrush="#334E68" BorderThickness="0,1,0,0">
                 <ContentControl Content="{Binding Log}" />
             </Border>
         </Grid>
