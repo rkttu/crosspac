@@ -11,7 +11,7 @@ using Crosspac.Core.Services;
 
 namespace Crosspac.App.ViewModels;
 
-public sealed partial class SolutionsViewModel : ViewModelBase
+public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
 {
     private readonly ISolutionService _solutions;
     private readonly IContextService _context;
@@ -34,16 +34,15 @@ public sealed partial class SolutionsViewModel : ViewModelBase
     public ObservableCollection<Solution> Solutions { get; } = new();
 
     [ObservableProperty] private Solution? _selectedSolution;
-    [ObservableProperty] private string _exportPath = "./out";
-    [ObservableProperty] private bool _exportManaged = true;
-    [ObservableProperty] private string _importPath = "";
     [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private bool _hasLoaded;
     [ObservableProperty] private string? _status;
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
         _cts = new CancellationTokenSource();
+        HasLoaded = true;
         IsBusy = true;
         Status = "Loading solutions…";
         try
@@ -76,16 +75,26 @@ public sealed partial class SolutionsViewModel : ViewModelBase
             return;
         }
 
+        // The export dialog collects the package type and the destination .zip.
+        var options = await _dialogs.RequestExportAsync(SelectedSolution.UniqueName);
+        if (options is null)
+        {
+            Status = "Export cancelled.";
+            return;
+        }
+
         await RunAsync($"Exporting {SelectedSolution.UniqueName}…", token =>
-            _solutions.ExportAsync(SelectedSolution.UniqueName, ExportPath, ExportManaged, token));
+            _solutions.ExportAsync(SelectedSolution.UniqueName, options.Destination, options.Managed, token));
     }
 
     [RelayCommand]
     private async Task ImportAsync()
     {
-        if (string.IsNullOrWhiteSpace(ImportPath))
+        // Pick the .zip up front via a native open dialog, then confirm before importing.
+        var file = await _picker.PickZipFileAsync();
+        if (file is null)
         {
-            Status = "Enter the path to a solution .zip to import.";
+            Status = "Import cancelled.";
             return;
         }
 
@@ -93,7 +102,7 @@ public sealed partial class SolutionsViewModel : ViewModelBase
         var confirmed = await _dialogs.ConfirmAsync(
             "Confirm solution import",
             $"Import this solution into the live environment?\n\n" +
-            $"File:         {ImportPath}\n" +
+            $"File:         {file}\n" +
             $"Environment:  {context.EnvironmentName}\n" +
             $"              {context.EnvironmentUrl}\n" +
             $"Profile:      {context.ProfileUser}\n\n" +
@@ -105,7 +114,7 @@ public sealed partial class SolutionsViewModel : ViewModelBase
             return;
         }
 
-        await RunAsync("Importing…", token => _solutions.ImportAsync(ImportPath, token), refreshAfter: true);
+        await RunAsync("Importing…", token => _solutions.ImportAsync(file, token), refreshAfter: true);
     }
 
     [RelayCommand]
@@ -154,22 +163,6 @@ public sealed partial class SolutionsViewModel : ViewModelBase
 
         await RunAsync($"Deleting {SelectedSolution.UniqueName}…",
             token => _solutions.DeleteAsync(SelectedSolution.UniqueName, token), refreshAfter: true);
-    }
-
-    [RelayCommand]
-    private async Task BrowseExportAsync()
-    {
-        var folder = await _picker.PickFolderAsync();
-        if (folder is not null)
-            ExportPath = folder;
-    }
-
-    [RelayCommand]
-    private async Task BrowseImportAsync()
-    {
-        var file = await _picker.PickZipFileAsync();
-        if (file is not null)
-            ImportPath = file;
     }
 
     [RelayCommand]

@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Crosspac.App.Views.ExportWindow"
+        Width="500" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Title="Export solution">
+
+    <StackPanel Margin="20" Spacing="18">
+        <TextBlock x:Name="Heading" FontWeight="Bold" FontSize="15" TextWrapping="Wrap" />
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Package type" FontWeight="SemiBold" />
+            <RadioButton x:Name="UnmanagedRadio" GroupName="pkg" IsChecked="True">
+                <StackPanel>
+                    <TextBlock Text="Unmanaged" FontWeight="SemiBold" />
+                    <TextBlock Text="Editable components. Use for source control and moving between development environments."
+                               Foreground="#627D98" TextWrapping="Wrap" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton x:Name="ManagedRadio" GroupName="pkg">
+                <StackPanel>
+                    <TextBlock Text="Managed" FontWeight="SemiBold" />
+                    <TextBlock Text="Locked components. Use for deploying to test or production environments."
+                               Foreground="#627D98" TextWrapping="Wrap" />
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+
+        <StackPanel Spacing="6">
+            <TextBlock Text="Destination" FontWeight="SemiBold" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBox x:Name="DestinationBox" Width="360" IsReadOnly="True"
+                         Watermark="Choose a .zip file location…" />
+                <Button Content="Browse…" Click="OnBrowse" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Content="Cancel" Click="OnCancel" MinWidth="80" />
+            <Button x:Name="ExportButton" Content="Export" Click="OnExport" IsDefault="True"
+                    MinWidth="80" IsEnabled="False" Classes="accent" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>

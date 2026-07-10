@@ -20,4 +20,16 @@ public sealed class DialogService : IDialogService
         dialog.Show();
         return false;
     }
+
+    public async Task<ExportOptions?> RequestExportAsync(string solutionUniqueName)
+    {
+        var dialog = new ExportWindow(solutionUniqueName);
+
+        var owner = (Application.Current?.ApplicationLifetime
+            as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+        return owner is not null
+            ? await dialog.ShowDialog<ExportOptions?>(owner)
+            : null;
+    }
 }
