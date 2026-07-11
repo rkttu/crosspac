@@ -22,7 +22,7 @@
                 <DataGridTextColumn Header="Unique Name" Binding="{Binding UniqueName}" Width="240" />
                 <DataGridTextColumn Header="Friendly Name" Binding="{Binding FriendlyName}" Width="*" />
                 <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="120" />
-                <DataGridCheckBoxColumn Header="Managed" Binding="{Binding IsManaged}" Width="90" />
+                <DataGridCheckBoxColumn Header="Is Managed?" Binding="{Binding IsManaged}" Width="110" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
