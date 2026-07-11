@@ -17,17 +17,20 @@ public sealed partial class SettingsViewModel : ViewModelBase
     private readonly AppSettings _settings;
     private readonly IPacExecutable _pac;
     private readonly IStoragePickerService _picker;
+    private readonly IFileLauncherService _launcher;
 
     public SettingsViewModel(
         ISettingsStore store,
         AppSettings settings,
         IPacExecutable pac,
-        IStoragePickerService picker)
+        IStoragePickerService picker,
+        IFileLauncherService launcher)
     {
         _store = store;
         _settings = settings;
         _pac = pac;
         _picker = picker;
+        _launcher = launcher;
         _pacPath = string.IsNullOrWhiteSpace(settings.PacExecutablePath) ? "pac" : settings.PacExecutablePath!;
     }
 
@@ -62,5 +65,15 @@ public sealed partial class SettingsViewModel : ViewModelBase
         // availability and advertised capabilities, invalidating everything loaded so far.
         if (changed)
             WeakReferenceMessenger.Default.Send(new PacExecutableChangedMessage());
+    }
+
+    [RelayCommand]
+    private void OpenSettingsFile()
+    {
+        // The file is only written on first save, so ensure it exists before handing it to the OS.
+        _store.Save(_settings);
+        Status = _launcher.Open(_store.FilePath)
+            ? "Opened the settings file in its default app."
+            : "Could not open the settings file.";
     }
 }

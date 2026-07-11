@@ -71,6 +71,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         IDialogService dialogs,
         IStoragePickerService picker,
         IClipboardService clipboard,
+        IFileLauncherService launcher,
         ISettingsStore settingsStore,
         AppSettings settings)
     {
@@ -87,7 +88,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         Auth = new AuthViewModel(auth);
         Environments = new EnvironmentsViewModel(environments);
         Solutions = new SolutionsViewModel(solutions, context, dialogs, picker);
-        Settings = new SettingsViewModel(settingsStore, settings, runner, picker);
+        Settings = new SettingsViewModel(settingsStore, settings, runner, picker, launcher);
 
         // Re-derive the shared busy overlay state whenever a tab starts/stops working.
         Auth.PropertyChanged += OnTabPropertyChanged;

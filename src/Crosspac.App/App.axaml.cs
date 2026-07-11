@@ -31,11 +31,12 @@ public partial class App : Application
             var dialogService = new DialogService();
             var pickerService = new StoragePickerService();
             var clipboardService = new ClipboardService();
+            var launcherService = new FileLauncherService();
 
             var mainViewModel = new MainWindowViewModel(
                 runner, capabilities, authService, environmentService, solutionService,
                 contextService, dialogService, pickerService, clipboardService,
-                settingsStore, settings);
+                launcherService, settingsStore, settings);
 
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
         }
