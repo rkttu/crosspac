@@ -33,7 +33,9 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
 
     public ObservableCollection<Solution> Solutions { get; } = new();
 
-    [ObservableProperty] private Solution? _selectedSolution;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExportCommand))]
+    private Solution? _selectedSolution;
     [ObservableProperty] private bool _isBusy;
     [ObservableProperty] private bool _hasLoaded;
     [ObservableProperty] private string? _status;
@@ -66,7 +68,12 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
         }
     }
 
-    [RelayCommand]
+    // The Default solution can't be exported, so the Export button is disabled for it.
+    private bool CanExport() =>
+        SelectedSolution is null ||
+        !string.Equals(SelectedSolution.UniqueName, "Default", StringComparison.OrdinalIgnoreCase);
+
+    [RelayCommand(CanExecute = nameof(CanExport))]
     private async Task ExportAsync()
     {
         if (SelectedSolution is null)
@@ -75,17 +82,18 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
             return;
         }
 
-        // The export dialog collects the name, destination .zip, and export switches. It also
-        // trims the name and defaults it to the unique name, so it's ready to pass to --name.
-        var options = await _dialogs.RequestExportAsync(SelectedSolution.UniqueName);
+        var solutionName = SelectedSolution.UniqueName;
+
+        // The export dialog collects the destination .zip and the export switches.
+        var options = await _dialogs.RequestExportAsync(solutionName);
         if (options is null)
         {
             Status = "Export cancelled.";
             return;
         }
 
-        await RunAsync($"Exporting {options.Name}…", token =>
-            _solutions.ExportAsync(options.Name, options.Destination, options.Managed, options.Overwrite, options.Async, token));
+        await RunAsync($"Exporting {solutionName}…", token =>
+            _solutions.ExportAsync(solutionName, options.Destination, options.Managed, options.Overwrite, options.Async, token));
     }
 
     [RelayCommand]

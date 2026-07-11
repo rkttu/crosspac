@@ -15,8 +15,6 @@ public partial class ExportWindow : Window
     {
         _solution = solutionUniqueName?.Trim() ?? "";
         Heading.Text = $"Export solution: {_solution}";
-        // Pre-fill with the solution's original name; the user can override it.
-        NameBox.Text = _solution;
     }
 
     private async void OnBrowse(object? sender, RoutedEventArgs e)
@@ -47,13 +45,7 @@ public partial class ExportWindow : Window
         if (string.IsNullOrWhiteSpace(DestinationBox.Text))
             return;
 
-        // Trim the entered name and fall back to the solution's original name when it's blank
-        // or whitespace-only, so --name always receives a clean, non-empty value.
-        var trimmed = NameBox.Text?.Trim();
-        var name = string.IsNullOrEmpty(trimmed) ? _solution : trimmed;
-
         Close(new ExportOptions(
-            name,
             DestinationBox.Text!,
             Managed: ManagedCheck.IsChecked == true,
             Overwrite: OverwriteCheck.IsChecked == true,
