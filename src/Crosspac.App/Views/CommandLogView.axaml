@@ -2,17 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Crosspac.App.Views.CommandLogView">
 
-    <DockPanel Background="#0B1620">
+    <DockPanel Background="{DynamicResource LogBackground}">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10"
                     Margin="10,6" VerticalAlignment="Center">
-            <TextBlock Text="Command Log" FontWeight="Bold" Foreground="#CBD2D9"
+            <TextBlock Text="Command Log" FontWeight="Bold" Foreground="{DynamicResource LogHeaderForeground}"
                        VerticalAlignment="Center" />
             <Button Content="Copy" Command="{Binding CopyCommand}" />
             <Button Content="Save…" Command="{Binding SaveCommand}" />
             <Button Content="Clear" Command="{Binding ClearCommand}" />
             <CheckBox Content="Auto-scroll" IsChecked="{Binding AutoScroll}"
-                      Foreground="#CBD2D9" VerticalAlignment="Center" />
-            <TextBlock Text="{Binding Status}" Foreground="#9FB3C8"
+                      Foreground="{DynamicResource LogHeaderForeground}" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Status}" Foreground="{DynamicResource LogSubtleForeground}"
                        VerticalAlignment="Center" />
         </StackPanel>
 
@@ -23,11 +23,11 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnDefinitions="Auto,*" Margin="0,1">
-                            <TextBlock Grid.Column="0" Text="{Binding Time}" Foreground="#627D98"
+                            <TextBlock Grid.Column="0" Text="{Binding Time}" Foreground="{DynamicResource LogTimeForeground}"
                                        Margin="0,0,10,0"
                                        FontFamily="Cascadia Code,Menlo,Consolas,monospace" />
                             <TextBlock Grid.Column="1" Text="{Binding Text}" TextWrapping="Wrap"
-                                       Foreground="#E4E7EB"
+                                       Foreground="{DynamicResource LogTextForeground}"
                                        FontFamily="Cascadia Code,Menlo,Consolas,monospace" />
                         </Grid>
                     </DataTemplate>

@@ -8,6 +8,53 @@
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Theme-aware chrome brushes. The header, status strip, command log, and the busy
+                 modal used to be hardcoded dark, which clashed with light mode and left their
+                 (FluentTheme, theme-matched) buttons rendering dark-on-dark. Driving those surfaces
+                 from the current theme variant keeps the whole app coherent in both light and dark. -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ChromeBackground" Color="#243B53" />
+                    <SolidColorBrush x:Key="ChromeForeground" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="ChromeSubtleForeground" Color="#BCCCDC" />
+                    <SolidColorBrush x:Key="StripBackground" Color="#F0F4F8" />
+                    <SolidColorBrush x:Key="StripLabelForeground" Color="#243B53" />
+                    <SolidColorBrush x:Key="StripValueForeground" Color="#334E68" />
+                    <SolidColorBrush x:Key="StripSeparatorForeground" Color="#9AA5B1" />
+                    <SolidColorBrush x:Key="DividerBrush" Color="#BCCCDC" />
+                    <SolidColorBrush x:Key="LogBackground" Color="#F0F4F8" />
+                    <SolidColorBrush x:Key="LogHeaderForeground" Color="#334E68" />
+                    <SolidColorBrush x:Key="LogTimeForeground" Color="#627D98" />
+                    <SolidColorBrush x:Key="LogTextForeground" Color="#1F2933" />
+                    <SolidColorBrush x:Key="LogSubtleForeground" Color="#627D98" />
+                    <SolidColorBrush x:Key="ScrimBrush" Color="#663E4C59" />
+                    <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="CardForeground" Color="#1F2933" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ChromeBackground" Color="#1F2933" />
+                    <SolidColorBrush x:Key="ChromeForeground" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="ChromeSubtleForeground" Color="#9FB3C8" />
+                    <SolidColorBrush x:Key="StripBackground" Color="#323F4B" />
+                    <SolidColorBrush x:Key="StripLabelForeground" Color="#E4E7EB" />
+                    <SolidColorBrush x:Key="StripValueForeground" Color="#CBD2D9" />
+                    <SolidColorBrush x:Key="StripSeparatorForeground" Color="#7B8794" />
+                    <SolidColorBrush x:Key="DividerBrush" Color="#334E68" />
+                    <SolidColorBrush x:Key="LogBackground" Color="#0B1620" />
+                    <SolidColorBrush x:Key="LogHeaderForeground" Color="#CBD2D9" />
+                    <SolidColorBrush x:Key="LogTimeForeground" Color="#627D98" />
+                    <SolidColorBrush x:Key="LogTextForeground" Color="#E4E7EB" />
+                    <SolidColorBrush x:Key="LogSubtleForeground" Color="#9FB3C8" />
+                    <SolidColorBrush x:Key="ScrimBrush" Color="#99202A33" />
+                    <SolidColorBrush x:Key="CardBackground" Color="#1F2933" />
+                    <SolidColorBrush x:Key="CardForeground" Color="#E4E7EB" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
