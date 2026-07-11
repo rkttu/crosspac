@@ -16,14 +16,15 @@
             </StackPanel>
         </Border>
 
-        <!-- Active context status strip -->
+        <!-- Active context status strip. The background is a fixed light strip, so text needs an
+             explicit dark foreground — the theme default flips to light (invisible here) in dark mode. -->
         <Border DockPanel.Dock="Top" Background="#E4E7EB" Padding="14,6">
             <StackPanel Orientation="Horizontal" Spacing="8">
-                <TextBlock Text="Active profile:" FontWeight="SemiBold" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding ActiveProfile}" VerticalAlignment="Center" />
+                <TextBlock Text="Active profile:" FontWeight="SemiBold" Foreground="#1F2933" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ActiveProfile}" Foreground="#334E68" VerticalAlignment="Center" />
                 <TextBlock Text="   •   " Foreground="#9AA5B1" VerticalAlignment="Center" />
-                <TextBlock Text="Active environment:" FontWeight="SemiBold" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding ActiveEnvironment}" VerticalAlignment="Center" />
+                <TextBlock Text="Active environment:" FontWeight="SemiBold" Foreground="#1F2933" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ActiveEnvironment}" Foreground="#334E68" VerticalAlignment="Center" />
             </StackPanel>
         </Border>
 
