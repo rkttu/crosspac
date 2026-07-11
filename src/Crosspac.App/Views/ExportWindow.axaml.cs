@@ -13,13 +13,15 @@ public partial class ExportWindow : Window
 
     public ExportWindow(string solutionUniqueName) : this()
     {
-        _solution = solutionUniqueName;
-        Heading.Text = $"Export solution: {solutionUniqueName}";
+        _solution = solutionUniqueName?.Trim() ?? "";
+        Heading.Text = $"Export solution: {_solution}";
+        // Pre-fill with the solution's original name; the user can override it.
+        NameBox.Text = _solution;
     }
 
     private async void OnBrowse(object? sender, RoutedEventArgs e)
     {
-        var suffix = ManagedRadio.IsChecked == true ? "_managed" : "";
+        var suffix = ManagedCheck.IsChecked == true ? "_managed" : "";
         var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             Title = "Export solution to…",
@@ -45,7 +47,17 @@ public partial class ExportWindow : Window
         if (string.IsNullOrWhiteSpace(DestinationBox.Text))
             return;
 
-        Close(new ExportOptions(ManagedRadio.IsChecked == true, DestinationBox.Text!));
+        // Trim the entered name and fall back to the solution's original name when it's blank
+        // or whitespace-only, so --name always receives a clean, non-empty value.
+        var trimmed = NameBox.Text?.Trim();
+        var name = string.IsNullOrEmpty(trimmed) ? _solution : trimmed;
+
+        Close(new ExportOptions(
+            name,
+            DestinationBox.Text!,
+            Managed: ManagedCheck.IsChecked == true,
+            Overwrite: OverwriteCheck.IsChecked == true,
+            Async: AsyncCheck.IsChecked == true));
     }
 
     private void OnCancel(object? sender, RoutedEventArgs e) => Close(null);

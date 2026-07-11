@@ -30,11 +30,15 @@ public sealed class SolutionService : ISolutionService
         return ParseText(result.StandardOutput);
     }
 
-    public Task<PacCommandResult> ExportAsync(string name, string path, bool managed, CancellationToken cancellationToken = default)
+    public Task<PacCommandResult> ExportAsync(string name, string path, bool managed, bool overwrite, bool async, CancellationToken cancellationToken = default)
     {
         var args = new List<string> { "solution", "export", "--name", name, "--path", path };
         if (managed)
             args.Add("--managed");
+        if (overwrite)
+            args.Add("--overwrite");
+        if (async)
+            args.Add("--async");
         return _runner.RunAsync(args, cancellationToken);
     }
 

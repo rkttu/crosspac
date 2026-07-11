@@ -27,16 +27,16 @@ public class SolutionServiceTests
     }
 
     [Fact]
-    public async Task ExportAsync_adds_managed_flag_only_when_requested()
+    public async Task ExportAsync_adds_switch_flags_only_when_requested()
     {
         var runner = new FakePacRunner("");
         var service = new SolutionService(runner);
 
-        await service.ExportAsync("mysolution", "./out", managed: true);
-        await service.ExportAsync("mysolution", "./out", managed: false);
+        await service.ExportAsync("mysolution", "./out", managed: true, overwrite: true, async: true);
+        await service.ExportAsync("mysolution", "./out", managed: false, overwrite: false, async: false);
 
         Assert.Equal(
-            new[] { "solution", "export", "--name", "mysolution", "--path", "./out", "--managed" },
+            new[] { "solution", "export", "--name", "mysolution", "--path", "./out", "--managed", "--overwrite", "--async" },
             runner.Invocations[0]);
         Assert.Equal(
             new[] { "solution", "export", "--name", "mysolution", "--path", "./out" },

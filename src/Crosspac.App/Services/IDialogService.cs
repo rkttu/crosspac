@@ -9,11 +9,14 @@ public interface IDialogService
     Task<bool> ConfirmAsync(string title, string message);
 
     /// <summary>
-    /// Shows the solution export dialog (package type + destination). Returns the chosen
-    /// options, or null if the user cancelled.
+    /// Shows the solution export dialog (name, destination, and export switches). Returns the
+    /// chosen options, or null if the user cancelled.
     /// </summary>
     Task<ExportOptions?> RequestExportAsync(string solutionUniqueName);
 }
 
-/// <summary>Result of the export dialog: the package type and the chosen .zip destination.</summary>
-public sealed record ExportOptions(bool Managed, string Destination);
+/// <summary>
+/// Result of the export dialog. <see cref="Name"/> is already trimmed and defaulted to the
+/// solution's unique name, so it can be passed straight to <c>--name</c>.
+/// </summary>
+public sealed record ExportOptions(string Name, string Destination, bool Managed, bool Overwrite, bool Async);

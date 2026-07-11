@@ -75,7 +75,8 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
             return;
         }
 
-        // The export dialog collects the package type and the destination .zip.
+        // The export dialog collects the name, destination .zip, and export switches. It also
+        // trims the name and defaults it to the unique name, so it's ready to pass to --name.
         var options = await _dialogs.RequestExportAsync(SelectedSolution.UniqueName);
         if (options is null)
         {
@@ -83,8 +84,8 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
             return;
         }
 
-        await RunAsync($"Exporting {SelectedSolution.UniqueName}…", token =>
-            _solutions.ExportAsync(SelectedSolution.UniqueName, options.Destination, options.Managed, token));
+        await RunAsync($"Exporting {options.Name}…", token =>
+            _solutions.ExportAsync(options.Name, options.Destination, options.Managed, options.Overwrite, options.Async, token));
     }
 
     [RelayCommand]
@@ -167,6 +168,14 @@ public sealed partial class SolutionsViewModel : ViewModelBase, IRefreshableTab
 
     [RelayCommand]
     private void Cancel() => _cts?.Cancel();
+
+    public void Invalidate()
+    {
+        Solutions.Clear();
+        SelectedSolution = null;
+        HasLoaded = false;
+        Status = null;
+    }
 
     /// <summary>Shared execution wrapper: busy state, cancellation, status, optional refresh.</summary>
     private async Task RunAsync(string startStatus, Func<CancellationToken, Task<PacCommandResult>> operation, bool refreshAfter = false)
