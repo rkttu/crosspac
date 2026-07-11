@@ -11,6 +11,13 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+
+        <!-- Center button labels app-wide. The Fluent default left-aligns content, which shows
+             whenever a button is wider than its text (e.g. dialog buttons with a MinWidth). The
+             type selector matches Button only, not RadioButton/ToggleButton, so those are untouched. -->
+        <Style Selector="Button">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
     </Application.Styles>
 
 </Application>
