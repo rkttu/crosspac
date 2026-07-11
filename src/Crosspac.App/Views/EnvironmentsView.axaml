@@ -11,6 +11,7 @@
 
         <DataGrid ItemsSource="{Binding Environments}"
                   SelectedItem="{Binding SelectedEnvironment, Mode=TwoWay}"
+                  DoubleTapped="OnRowDoubleTapped"
                   IsReadOnly="True" AutoGenerateColumns="False"
                   GridLinesVisibility="Horizontal">
             <DataGrid.Columns>
