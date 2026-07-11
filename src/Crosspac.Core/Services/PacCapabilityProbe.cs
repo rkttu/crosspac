@@ -65,6 +65,21 @@ public sealed partial class PacCapabilityProbe : IPacCapabilityProbe
         return flags;
     }
 
+    public async Task ResetAsync(CancellationToken cancellationToken = default)
+    {
+        // Take the same gate the probes use so a clear can't race an in-flight probe writing
+        // a stale entry back into the cache.
+        await _gate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            _cache.Clear();
+        }
+        finally
+        {
+            _gate.Release();
+        }
+    }
+
     private static string Normalize(string flag) => flag.TrimStart('-').ToLowerInvariant();
 
     [GeneratedRegex(@"^\s+--([A-Za-z0-9][A-Za-z0-9-]*)")]

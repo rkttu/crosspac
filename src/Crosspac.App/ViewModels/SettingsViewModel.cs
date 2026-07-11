@@ -1,6 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Crosspac.App.Messages;
 using Crosspac.App.Services;
 using Crosspac.Core.Configuration;
 using Crosspac.Core.Execution;
@@ -47,10 +50,17 @@ public sealed partial class SettingsViewModel : ViewModelBase
         // "pac" (or blank) means "resolve on PATH" → store null.
         var normalized = string.IsNullOrWhiteSpace(PacPath) || PacPath.Trim() == "pac" ? null : PacPath.Trim();
 
+        var changed = !string.Equals(_settings.PacExecutablePath, normalized, StringComparison.Ordinal);
+
         _settings.PacExecutablePath = normalized;
         _pac.ExecutablePath = normalized ?? "pac"; // applies immediately to the shared runner
         _store.Save(_settings);
 
         Status = "Saved. New pac path is in effect.";
+
+        // Only re-probe/reload when the binary actually changed — a new pac can differ in
+        // availability and advertised capabilities, invalidating everything loaded so far.
+        if (changed)
+            WeakReferenceMessenger.Default.Send(new PacExecutableChangedMessage());
     }
 }

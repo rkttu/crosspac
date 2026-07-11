@@ -20,4 +20,10 @@ public interface IRefreshableTab : INotifyPropertyChanged
 
     IAsyncRelayCommand RefreshCommand { get; }
     IRelayCommand CancelCommand { get; }
+
+    /// <summary>
+    /// Discards loaded data and resets to the unloaded state so the tab reloads the next time
+    /// it is shown. The shell calls this to cascade an auth/environment change to dependent tabs.
+    /// </summary>
+    void Invalidate();
 }

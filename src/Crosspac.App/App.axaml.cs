@@ -33,7 +33,7 @@ public partial class App : Application
             var clipboardService = new ClipboardService();
 
             var mainViewModel = new MainWindowViewModel(
-                runner, authService, environmentService, solutionService,
+                runner, capabilities, authService, environmentService, solutionService,
                 contextService, dialogService, pickerService, clipboardService,
                 settingsStore, settings);
 

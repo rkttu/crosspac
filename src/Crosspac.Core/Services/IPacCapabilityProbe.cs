@@ -12,4 +12,10 @@ public interface IPacCapabilityProbe
 
     /// <summary>True if the verb advertises the given flag (e.g. <c>"--json"</c>).</summary>
     Task<bool> SupportsFlagAsync(IReadOnlyList<string> verb, string flag, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Discards every cached probe result. Call when the pac executable is reconfigured, since
+    /// a different binary can advertise different flags for the same verb.
+    /// </summary>
+    Task ResetAsync(CancellationToken cancellationToken = default);
 }

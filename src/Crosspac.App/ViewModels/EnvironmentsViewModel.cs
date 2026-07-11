@@ -58,18 +58,34 @@ public sealed partial class EnvironmentsViewModel : ViewModelBase, IRefreshableT
     {
         if (SelectedEnvironment is null) return;
         _cts = new CancellationTokenSource();
+        // Raise the busy state up front (before the select call, not just during the follow-up
+        // refresh) so the modal overlay pops immediately on double-click and blocks further input.
+        IsBusy = true;
+        Status = "Selecting environment…";
         try
         {
             await _environments.SelectAsync(SelectedEnvironment.SelectionTarget, _cts.Token);
             await RefreshAsync();
-            WeakReferenceMessenger.Default.Send(new ActiveContextChangedMessage());
+            WeakReferenceMessenger.Default.Send(new ActiveContextChangedMessage(ContextChangeScope.Environment));
         }
         catch (OperationCanceledException)
         {
             Status = "Cancelled.";
         }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
     private void Cancel() => _cts?.Cancel();
+
+    public void Invalidate()
+    {
+        Environments.Clear();
+        SelectedEnvironment = null;
+        HasLoaded = false;
+        Status = null;
+    }
 }

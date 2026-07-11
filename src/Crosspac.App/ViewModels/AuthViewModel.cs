@@ -58,18 +58,34 @@ public sealed partial class AuthViewModel : ViewModelBase, IRefreshableTab
     {
         if (SelectedProfile is null) return;
         _cts = new CancellationTokenSource();
+        // Raise the busy state up front (before the select call, not just during the follow-up
+        // refresh) so the modal overlay pops immediately on double-click and blocks further input.
+        IsBusy = true;
+        Status = "Setting active profile…";
         try
         {
             await _auth.SelectAsync(SelectedProfile.Index, _cts.Token);
             await RefreshAsync();
-            WeakReferenceMessenger.Default.Send(new ActiveContextChangedMessage());
+            WeakReferenceMessenger.Default.Send(new ActiveContextChangedMessage(ContextChangeScope.Profile));
         }
         catch (OperationCanceledException)
         {
             Status = "Cancelled.";
         }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
     private void Cancel() => _cts?.Cancel();
+
+    public void Invalidate()
+    {
+        Profiles.Clear();
+        SelectedProfile = null;
+        HasLoaded = false;
+        Status = null;
+    }
 }

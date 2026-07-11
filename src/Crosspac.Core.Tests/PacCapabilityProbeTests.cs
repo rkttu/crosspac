@@ -55,4 +55,25 @@ public class PacCapabilityProbeTests
         Assert.Single(runner.Invocations);
         Assert.Equal(new[] { "auth", "list", "help" }, runner.Invocations[0]);
     }
+
+    [Fact]
+    public async Task ResetAsync_reprobes_after_the_pac_binary_changes()
+    {
+        // Simulate swapping the pac binary: the first install advertises --json, the next doesn't.
+        var advertisesJson = true;
+        var runner = new ScriptedPacRunner(_ => advertisesJson ? "  --json   x\n" : "  --environment   x\n");
+        var probe = new PacCapabilityProbe(runner);
+
+        Assert.True(await probe.SupportsFlagAsync(new[] { "auth", "list" }, "--json"));
+
+        advertisesJson = false;
+        // Without a reset the stale cached answer survives the swap.
+        Assert.True(await probe.SupportsFlagAsync(new[] { "auth", "list" }, "--json"));
+        Assert.Single(runner.Invocations);
+
+        await probe.ResetAsync();
+        // After a reset the verb is probed again and reflects the new binary.
+        Assert.False(await probe.SupportsFlagAsync(new[] { "auth", "list" }, "--json"));
+        Assert.Equal(2, runner.Invocations.Count);
+    }
 }
