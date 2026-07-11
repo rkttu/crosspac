@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Crosspac.Core.Models;
 
 namespace Crosspac.App.Services;
 
@@ -13,6 +14,11 @@ public interface IDialogService
     /// options, or null if the user cancelled.
     /// </summary>
     Task<ExportOptions?> RequestExportAsync(string solutionUniqueName);
+
+    /// <summary>
+    /// Shows the create-environment dialog. Returns the chosen options, or null if cancelled.
+    /// </summary>
+    Task<EnvironmentCreateOptions?> RequestCreateEnvironmentAsync();
 }
 
 /// <summary>Result of the export dialog: the destination .zip and the export switches.</summary>

@@ -8,11 +8,27 @@
     <DockPanel>
         <!-- Header -->
         <Border DockPanel.Dock="Top" Background="{DynamicResource ChromeBackground}" Padding="14,10">
-            <StackPanel Orientation="Horizontal" Spacing="12">
-                <TextBlock Text="Crosspac" FontWeight="Bold" FontSize="16"
-                           Foreground="{DynamicResource ChromeForeground}" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding PacStatus}" Foreground="{DynamicResource ChromeSubtleForeground}"
-                           VerticalAlignment="Center" />
+            <DockPanel>
+                <!-- Safety toggle: read-only is on by default; unchecking it enables destructive ops. -->
+                <CheckBox DockPanel.Dock="Right" Content="Read-only mode"
+                          IsChecked="{Binding Mode.IsReadOnly}"
+                          Foreground="{DynamicResource ChromeForeground}" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="Crosspac" FontWeight="Bold" FontSize="16"
+                               Foreground="{DynamicResource ChromeForeground}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PacStatus}" Foreground="{DynamicResource ChromeSubtleForeground}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Write-mode danger banner: strong indicator that destructive operations are enabled. -->
+        <Border DockPanel.Dock="Top" Background="#C0392B" Padding="14,8"
+                IsVisible="{Binding IsWriteMode}">
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <TextBlock Text="⚠" Foreground="White" FontSize="16" VerticalAlignment="Center" />
+                <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap"
+                           Text="WRITE MODE — creating, resetting, and deleting environments is enabled. Re-enable read-only mode when you're done." />
             </StackPanel>
         </Border>
 

@@ -26,17 +26,19 @@ public partial class App : Application
             var capabilities = new PacCapabilityProbe(runner);
             var authService = new AuthService(runner, capabilities);
             var environmentService = new EnvironmentService(runner, capabilities);
+            var environmentAdminService = new EnvironmentAdminService(runner);
             var solutionService = new SolutionService(runner, capabilities);
             var contextService = new ContextService(authService, environmentService);
             var dialogService = new DialogService();
             var pickerService = new StoragePickerService();
             var clipboardService = new ClipboardService();
             var launcherService = new FileLauncherService();
+            var appMode = new AppModeState();
 
             var mainViewModel = new MainWindowViewModel(
-                runner, capabilities, authService, environmentService, solutionService,
-                contextService, dialogService, pickerService, clipboardService,
-                launcherService, settingsStore, settings);
+                runner, capabilities, authService, environmentService, environmentAdminService,
+                solutionService, contextService, dialogService, pickerService, clipboardService,
+                launcherService, appMode, settingsStore, settings);
 
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
         }

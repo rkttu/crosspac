@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Crosspac.App.Views.CreateEnvironmentWindow"
+        Width="480" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Title="Create environment">
+
+    <StackPanel Margin="20" Spacing="14">
+        <TextBlock Text="Create environment" FontWeight="Bold" FontSize="15" />
+        <TextBlock Text="Creates a new Dataverse environment in your tenant (pac admin create). Leave a field blank to use pac's default."
+                   Foreground="#627D98" TextWrapping="Wrap" />
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Name" FontWeight="SemiBold" />
+            <TextBox x:Name="NameBox" Watermark="e.g. Contoso Test" />
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Type" FontWeight="SemiBold" />
+            <ComboBox x:Name="TypeCombo" HorizontalAlignment="Stretch" />
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Domain" FontWeight="SemiBold" />
+            <TextBox x:Name="DomainBox" Watermark="URL prefix — letters, digits, hyphen" />
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Region" FontWeight="SemiBold" />
+            <TextBox x:Name="RegionBox" Watermark="unitedstates (default)" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="12">
+            <StackPanel Spacing="4" Width="204">
+                <TextBlock Text="Currency" FontWeight="SemiBold" />
+                <TextBox x:Name="CurrencyBox" Watermark="USD (default)" />
+            </StackPanel>
+            <StackPanel Spacing="4" Width="204">
+                <TextBlock Text="Language" FontWeight="SemiBold" />
+                <TextBox x:Name="LanguageBox" Watermark="English (default)" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Content="Cancel" Click="OnCancel" MinWidth="80" />
+            <Button Content="Create" Click="OnCreate" IsDefault="True" MinWidth="80" Classes="accent" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>

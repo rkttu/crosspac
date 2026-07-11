@@ -31,6 +31,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     public SettingsViewModel Settings { get; }
     public CommandLogViewModel Log { get; }
 
+    /// <summary>App-wide read-only/write safety mode, shared with the tabs and surfaced in the header.</summary>
+    public AppModeState Mode { get; }
+
+    /// <summary>True while write mode is on; drives the danger banner and warns of destructive ops.</summary>
+    public bool IsWriteMode => !Mode.IsReadOnly;
+
     [ObservableProperty] private string _pacStatus = "Checking for pac CLI…";
     [ObservableProperty] private string _activeProfile = "…";
     [ObservableProperty] private string _activeEnvironment = "…";
@@ -66,12 +72,14 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         IPacCapabilityProbe capabilities,
         IAuthService auth,
         IEnvironmentService environments,
+        IEnvironmentAdminService environmentAdmin,
         ISolutionService solutions,
         IContextService context,
         IDialogService dialogs,
         IStoragePickerService picker,
         IClipboardService clipboard,
         IFileLauncherService launcher,
+        AppModeState mode,
         ISettingsStore settingsStore,
         AppSettings settings)
     {
@@ -80,13 +88,21 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         _context = context;
         _settingsStore = settingsStore;
         _settings = settings;
+        Mode = mode;
+
+        // Refresh the danger banner whenever the safety mode flips.
+        Mode.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(AppModeState.IsReadOnly))
+                OnPropertyChanged(nameof(IsWriteMode));
+        };
 
         _windowWidth = settings.WindowWidth;
         _windowHeight = settings.WindowHeight;
         _logPanelHeight = new GridLength(settings.LogPanelHeight, GridUnitType.Pixel);
 
         Auth = new AuthViewModel(auth);
-        Environments = new EnvironmentsViewModel(environments);
+        Environments = new EnvironmentsViewModel(environments, environmentAdmin, dialogs, mode);
         Solutions = new SolutionsViewModel(solutions, context, dialogs, picker);
         Settings = new SettingsViewModel(settingsStore, settings, runner, picker, launcher);
 

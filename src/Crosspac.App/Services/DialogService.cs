@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Crosspac.App.Views;
+using Crosspac.Core.Models;
 
 namespace Crosspac.App.Services;
 
@@ -30,6 +31,18 @@ public sealed class DialogService : IDialogService
 
         return owner is not null
             ? await dialog.ShowDialog<ExportOptions?>(owner)
+            : null;
+    }
+
+    public async Task<EnvironmentCreateOptions?> RequestCreateEnvironmentAsync()
+    {
+        var dialog = new CreateEnvironmentWindow();
+
+        var owner = (Application.Current?.ApplicationLifetime
+            as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+        return owner is not null
+            ? await dialog.ShowDialog<EnvironmentCreateOptions?>(owner)
             : null;
     }
 }
